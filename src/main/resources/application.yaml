@@ -1,0 +1,50 @@
+management:
+  endpoints:
+    web:
+      base-path: /rest/actuator
+      exposure:
+        include: '*'
+
+
+springdoc:
+  api-docs:
+    version: OPENAPI_3_1
+  documentation:
+    swagger:
+      team: Test API Team
+      url: http://test.com.br
+      email: email@test.com.br
+      api:
+        title: API Card Authorizing
+        description: API Description
+        version: 1.0
+
+
+spring:
+  application:
+    name: auth
+    
+  data:
+    mongodb:
+      username: user
+      password: password
+      database: miniautorizador
+      uri: mongodb://localhost:27017/miniautorizador
+      
+  profiles:
+    active: local
+
+      
+      
+server:
+  servlet:
+    context-path: /v1/api
+  port: '8887'
+  
+  
+logging:
+  level:
+    org:
+      hibernate:
+        type: TRACE
+        SQL: DEBUG
