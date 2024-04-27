@@ -28,3 +28,7 @@ replay_pid*
 .settings/org.eclipse.jdt.apt.core.prefs
 .settings/org.eclipse.core.resources.prefs
 .mvn/wrapper/maven-wrapper.properties
+/target
+/bin
+.factorypath
+.classpath

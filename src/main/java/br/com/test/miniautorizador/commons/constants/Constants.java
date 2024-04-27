@@ -34,5 +34,9 @@ public class Constants {
 	public static final String UNAVAILABLE_STACK_TRACE = "";
 
 	// Card
-	public static final Double INITIAL_BALANCE = Double.valueOf("500");
+	public static final Double CARD_INITIAL_BALANCE = Double.valueOf("500");
+	public static final String CARD_NOT_FOUND = "CARTAO_INEXISTENTE";
+	public static final String CARD_INVALID_PASSWORD = "SENHA_INVALIDA";
+	public static final String CARD_INSUFFICIENT_BALANCE = "SALDO_INSUFICIENTE";
+	
 }

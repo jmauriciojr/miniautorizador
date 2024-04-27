@@ -11,5 +11,6 @@ import br.com.test.miniautorizador.domain.document.Card;
 public interface CardRepository  extends MongoRepository<Card, String> {
 	
 	Optional<Card> findByNumber(String number);
-	
+
+	boolean existsByNumber(String number);
 }

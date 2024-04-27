@@ -16,18 +16,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode(callSuper = false)
-public class CardAlreadyExistsException extends RuntimeException {
+public class TransactionException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
 	private final String message;
 
 	private final String description;
-	
-	private final Object body;
 
 	public BusinessExceptionBody getOnlyBody() {
-		return BusinessExceptionBody.builder().body(this.body).build();
+		return BusinessExceptionBody.builder().message(this.message).description(this.description)
+				.build();
 	}
 
 	@Data
@@ -41,8 +40,6 @@ public class CardAlreadyExistsException extends RuntimeException {
 		private String message;
 
 		private String description;
-		
-		private Object body;
 
 		@JsonIgnore
 		public boolean isEmpty() {

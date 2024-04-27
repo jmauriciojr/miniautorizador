@@ -81,7 +81,7 @@ public class ControlExceptionHandler {
 		log.error(LOG_KEY_METHOD + LOG_KEY_EVENT + LOG_KEY_HTTP_CODE + LOG_KEY_MESSAGE + LOG_KEY_DESCRIPTION,
 				"Throwable", LOG_EXCEPTION, HTTP_CODE_BAD_REQUEST, ex.getMessage(), ExceptionResolver.getRootException(ex));
 		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).headers(responseHeaders).body(ex.getOnlyBody());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).headers(responseHeaders).body(null);
 
 	}
 	
@@ -94,7 +94,7 @@ public class ControlExceptionHandler {
 		log.error(LOG_KEY_METHOD + LOG_KEY_EVENT + LOG_KEY_HTTP_CODE + LOG_KEY_MESSAGE + LOG_KEY_DESCRIPTION,
 				"Throwable", LOG_EXCEPTION, HTTP_CODE_BAD_REQUEST, ex.getMessage(), ExceptionResolver.getRootException(ex));
 		
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).headers(responseHeaders).body(ex.getOnlyBody());
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY.value()).headers(responseHeaders).body(ex.getOnlyBody().getBody());
 
 	}
 
