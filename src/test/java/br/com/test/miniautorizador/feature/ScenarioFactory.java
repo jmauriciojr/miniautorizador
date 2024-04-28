@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import br.com.test.miniautorizador.domain.CreateCardDTO;
 import br.com.test.miniautorizador.domain.ResponseCardDTO;
+import br.com.test.miniautorizador.domain.TransactionDTO;
 import br.com.test.miniautorizador.domain.document.Card;
 
 public class ScenarioFactory {
@@ -16,6 +17,7 @@ public class ScenarioFactory {
 	public static final Optional<Card> CARD_FOR_BALANCE_OPTIONAL = Optional.of(getCardForBalance());
 	public static final Card CARD_FOR_BALANCE = getCardForBalance();
 	public static final Optional<Card> NEW_CARD_TRANSACTION_OPTIONAL = Optional.of(newCardTransaction());
+	public static final TransactionDTO TRANSACTION_DTO = mountTransactionDTO();
 	
 
 	public static Card newCard() {
@@ -36,6 +38,10 @@ public class ScenarioFactory {
 	
 	public static Card newCardTransaction() {
 		return Card.builder().number("1111222233337777").password("7777").balance(500d).build();
+	}
+	
+	public static TransactionDTO mountTransactionDTO() {
+		return TransactionDTO.builder().number("1111222233337777").password("7777").value(150d).build();
 	}
 
 }

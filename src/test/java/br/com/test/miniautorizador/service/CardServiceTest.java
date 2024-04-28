@@ -1,6 +1,10 @@
 package br.com.test.miniautorizador.service;
 
-import org.junit.jupiter.api.Assertions;
+import static org.mockito.Mockito.reset;
+
+import java.util.Optional;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -36,7 +40,7 @@ class CardServiceTest {
 
 		cardService = new CardServiceImpl(cardRepository, cardAssembler);
 
-		BDDMockito.given(cardRepository.existsByNumber(ScenarioFactory.CARD_NUMBER_1)).willReturn(false);
+		BDDMockito.given(cardRepository.findByNumber(ScenarioFactory.CARD_NUMBER_1)).willReturn(Optional.ofNullable(null));
 
 		BDDMockito.given(cardAssembler.fromDTO(ArgumentMatchers.any(CreateCardDTO.class)))
 				.willReturn(ScenarioFactory.NEW_CARD);
@@ -48,7 +52,8 @@ class CardServiceTest {
 
 		var card = cardService.create(ScenarioFactory.NEW_CARD_DTO);
 
-		Assertions.assertEquals(card.getNumber(), "1111222233334444");
+		Assertions.assertThat(card.getNumber()).isEqualTo("1111222233334444");
+        reset(cardRepository);
 	}
 
 	@Test
@@ -61,7 +66,8 @@ class CardServiceTest {
 
 		var balance = cardService.getBalance("1111222233336666");
 
-		Assertions.assertEquals(balance, 500d);
+		Assertions.assertThat(balance).isEqualTo(500d);
+		reset(cardRepository);
 	}
 
 	@Test
@@ -81,7 +87,8 @@ class CardServiceTest {
 
 		var balance = cardService.getBalance("1111222233337777");
 
-		Assertions.assertEquals(balance - request.getValue(), 300d);
+		Assertions.assertThat(balance - request.getValue()).isEqualTo(300d);
+		reset(cardRepository);
 	}
 
 }

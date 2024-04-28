@@ -16,6 +16,7 @@ public class Constants {
     public static final String LOG_EVENT_INFO = "info";
     public static final String LOG_EVENT_ERROR = "error";
     public static final String LOG_KEY_CAUSE = "cause={} ";
+    public static final String THROWABLE = "Throwable";
     
 	public static final String LOG_KEY_HTTP_CODE = "httpCode={} ";
 	public static final String LOG_KEY_ENTITY_STATUS = "entityStatus={} ";
