@@ -1,5 +1,7 @@
 package br.com.test.miniautorizador.domain;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,5 +14,5 @@ import lombok.experimental.SuperBuilder;
 public class ResponseTransactionDTO {
 
     private String number;
-    private Double balance;
+    private BigDecimal balance;
 }

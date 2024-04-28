@@ -1,5 +1,6 @@
 package br.com.test.miniautorizador.feature;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import br.com.test.miniautorizador.domain.CreateCardDTO;
@@ -21,7 +22,7 @@ public class ScenarioFactory {
 	
 
 	public static Card newCard() {
-		return Card.builder().number("1111222233334444").password("1111").balance(500d).build();
+		return Card.builder().number("1111222233334444").password("1111").balance(BigDecimal.valueOf(500)).build();
 	}
 
 	private static CreateCardDTO createCardDTO() {
@@ -33,15 +34,15 @@ public class ScenarioFactory {
 	}
 
 	public static Card getCardForBalance() {
-		return Card.builder().number("1111222233337777").password("7777").balance(500d).build();
+		return Card.builder().number("1111222233337777").password("7777").balance(BigDecimal.valueOf(500)).build();
 	}
 	
 	public static Card newCardTransaction() {
-		return Card.builder().number("1111222233337777").password("7777").balance(500d).build();
+		return Card.builder().number("1111222233337777").password("7777").balance(BigDecimal.valueOf(500)).build();
 	}
 	
 	public static TransactionDTO mountTransactionDTO() {
-		return TransactionDTO.builder().number("1111222233337777").password("7777").value(150d).build();
+		return TransactionDTO.builder().number("1111222233337777").password("7777").value(BigDecimal.valueOf(150)).build();
 	}
 
 }

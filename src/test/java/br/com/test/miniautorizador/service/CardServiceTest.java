@@ -2,6 +2,7 @@ package br.com.test.miniautorizador.service;
 
 import static org.mockito.Mockito.reset;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
@@ -77,7 +78,7 @@ class CardServiceTest {
 	}
 
 	@Test
-	void givenCardNumber_whenGetBalance_thenReturnDouble() throws NotFoundException {
+	void givenCardNumber_whenGetBalance_thenReturnValue() throws NotFoundException {
 
 		cardService = new CardServiceImpl(cardRepository, cardAssembler);
 
@@ -86,7 +87,7 @@ class CardServiceTest {
 
 		var balance = cardService.getBalance("1111222233336666");
 
-		Assertions.assertThat(balance).isEqualTo(500d);
+		Assertions.assertThat(balance).isEqualTo(BigDecimal.valueOf(500));
 		reset(cardRepository);
 	}
 	
@@ -109,7 +110,7 @@ class CardServiceTest {
 	@Test
 	void givenTransactionDTO_whenDoTransaction_thenReturnVoid() throws NotFoundException {
 
-		var request = TransactionDTO.builder().number("1111222233337777").password("7777").value(200d).build();
+		var request = TransactionDTO.builder().number("1111222233337777").password("7777").value(BigDecimal.valueOf(200)).build();
 
 		cardService = new CardServiceImpl(cardRepository, cardAssembler);
 
@@ -123,14 +124,14 @@ class CardServiceTest {
 
 		var balance = cardService.getBalance("1111222233337777");
 
-		Assertions.assertThat(balance - request.getValue()).isEqualTo(300d);
+		Assertions.assertThat(balance.subtract(request.getValue())).isEqualTo(BigDecimal.valueOf(300));
 		reset(cardRepository);
 	}
 	
 	@Test
 	void givenTransactionDTO_whenDoTransaction_thenReturnCardNotFound() throws NotFoundException {
 
-		var request = TransactionDTO.builder().number("1111222233337777").password("7777").value(2000d).build();
+		var request = TransactionDTO.builder().number("1111222233337777").password("7777").value(BigDecimal.valueOf(200)).build();
 
 		cardService = new CardServiceImpl(cardRepository, cardAssembler);
 
@@ -148,7 +149,7 @@ class CardServiceTest {
 	@Test
 	void givenTransactionDTO_whenDoTransaction_thenReturnInsufficientBalance() throws NotFoundException {
 
-		var request = TransactionDTO.builder().number("1111222233337777").password("7777").value(2000d).build();
+		var request = TransactionDTO.builder().number("1111222233337777").password("7777").value(BigDecimal.valueOf(2000)).build();
 
 		cardService = new CardServiceImpl(cardRepository, cardAssembler);
 
@@ -166,7 +167,7 @@ class CardServiceTest {
 	@Test
 	void givenTransactionDTO_whenDoTransaction_thenReturnInvalidPassword() throws NotFoundException {
 
-		var request = TransactionDTO.builder().number("1111222233337777").password("000").value(2000d).build();
+		var request = TransactionDTO.builder().number("1111222233337777").password("000").value(BigDecimal.valueOf(2000)).build();
 
 		cardService = new CardServiceImpl(cardRepository, cardAssembler);
 

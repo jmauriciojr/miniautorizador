@@ -7,6 +7,8 @@ import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_EV
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_MESSAGE;
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_METHOD;
 
+import java.math.BigDecimal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +62,7 @@ public class CardController {
 			@ApiResponse(responseCode = "404", description = "Cartão não Existe!") })
 	@ResponseStatus(value = HttpStatus.OK)
 	@GetMapping("/{numeroCartao}")
-	public ResponseEntity<Double> getBalance(
+	public ResponseEntity<BigDecimal> getBalance(
 			@Parameter(description = "Número do Cartão [*Obrigatório]", required = true) @PathVariable("numeroCartao") String numeroCartao) {
 		log.info(LOG_KEY_MESSAGE + LOG_KEY_METHOD + LOG_KEY_ENTITY_ID + LOG_KEY_EVENT + LOG_HEADER_CONSUMER,
 				"Get Balance", "getBalance", numeroCartao, LOG_EVENT_INFO);

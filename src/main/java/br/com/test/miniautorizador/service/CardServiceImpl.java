@@ -10,6 +10,8 @@ import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_EV
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_MESSAGE;
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_METHOD;
 
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +45,7 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public Double getBalance(String cardNumber) {
+	public BigDecimal getBalance(String cardNumber) {
 		log.info(LOG_KEY_MESSAGE + LOG_KEY_METHOD + LOG_KEY_ENTITY + LOG_KEY_EVENT, "Balance: ", "getBalance",
 				cardNumber, LOG_EVENT_INFO);
 
@@ -65,7 +67,7 @@ public class CardServiceImpl implements CardService {
 		this.validatePassword(card, transactionDTO.getPassword());
 		this.validateBalance(card, transactionDTO.getValue());
 
-		card.setBalance(card.getBalance() - transactionDTO.getValue());
+		card.setBalance(card.getBalance().subtract(transactionDTO.getValue()));
 		this.cardRepository.save(card);
 
 	}
@@ -94,8 +96,8 @@ public class CardServiceImpl implements CardService {
 		}
 	}
 
-	private void validateBalance(Card card, Double transactionValue) {
-		if (card.getBalance() < transactionValue) {
+	private void validateBalance(Card card, BigDecimal transactionValue) {
+		if (card.getBalance().compareTo(transactionValue) < 0 ) {
 			throw new TransactionException(CARD_INSUFFICIENT_BALANCE, CARD_INSUFFICIENT_BALANCE);
 		}
 	}

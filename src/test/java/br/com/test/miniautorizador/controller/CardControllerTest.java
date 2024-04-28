@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -69,10 +71,10 @@ class CardControllerTest {
 	@Test
 	void givenCardNumber_whenGetBalance_ExpectedOK() throws Exception {
 
-		when(cardService.getBalance(anyString())).thenReturn(500d);
+		when(cardService.getBalance(anyString())).thenReturn(BigDecimal.valueOf(500));
 
 		mockMvc.perform(get("/cartoes/1111222233334444")).andExpect(status().isOk())
-				.andExpect(content().string("500.0"));
+				.andExpect(content().string("500"));
 
 		verify(cardService, VerificationModeFactory.times(1)).getBalance(Mockito.any());
 		reset(cardService);

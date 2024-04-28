@@ -1,5 +1,6 @@
 package br.com.test.miniautorizador.domain.document;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -29,7 +30,7 @@ public class Card {
 	@Indexed(unique = true)
     private String number;
     private String password;
-    private Double balance;
+    private BigDecimal balance;
     
     @CreatedDate
     private LocalDateTime createdDate;

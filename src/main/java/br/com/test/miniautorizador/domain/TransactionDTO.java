@@ -1,5 +1,7 @@
 package br.com.test.miniautorizador.domain;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotNull;
@@ -24,5 +26,5 @@ public class TransactionDTO {
 	
 	@JsonProperty("valor")
 	@NotNull(message = "O Valor da transação é obrigatóri0.")
-    private Double value;
+    private BigDecimal value;
 }
