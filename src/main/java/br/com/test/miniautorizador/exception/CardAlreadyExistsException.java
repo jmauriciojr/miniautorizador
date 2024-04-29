@@ -24,7 +24,7 @@ public class CardAlreadyExistsException extends RuntimeException {
 
 	private final String description;
 	
-	private final Object body;
+	private final transient Object body;
 
 	public BusinessExceptionBody getOnlyBody() {
 		return BusinessExceptionBody.builder().body(this.body).build();

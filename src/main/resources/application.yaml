@@ -22,7 +22,7 @@ springdoc:
 
 spring:
   application:
-    name: auth
+    name: miniautorizador
     
   data:
     mongodb:

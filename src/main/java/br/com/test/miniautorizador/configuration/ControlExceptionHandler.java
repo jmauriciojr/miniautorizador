@@ -1,19 +1,19 @@
 package br.com.test.miniautorizador.configuration;
 
+import static br.com.test.miniautorizador.commons.constants.Constants.HTTP_CODE_BAD_REQUEST;
 import static br.com.test.miniautorizador.commons.constants.Constants.HTTP_CODE_NOT_FOUND;
-import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_HTTP_CODE;
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_EXCEPTION;
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_DESCRIPTION;
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_EVENT;
+import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_HTTP_CODE;
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_MESSAGE;
 import static br.com.test.miniautorizador.commons.constants.Constants.LOG_KEY_METHOD;
-import static br.com.test.miniautorizador.commons.constants.Constants.HTTP_CODE_BAD_REQUEST;
+import static br.com.test.miniautorizador.commons.constants.Constants.THROWABLE;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -37,6 +37,7 @@ import br.com.test.miniautorizador.exception.BusinessException;
 import br.com.test.miniautorizador.exception.CardAlreadyExistsException;
 import br.com.test.miniautorizador.exception.CardNotFoundException;
 import br.com.test.miniautorizador.exception.ExceptionResolver;
+import br.com.test.miniautorizador.exception.TransactionException;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -67,7 +68,7 @@ public class ControlExceptionHandler {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.set(X_AUTH_TRACEID, this.getTraceID());
 		log.error(LOG_KEY_METHOD + LOG_KEY_EVENT + LOG_KEY_HTTP_CODE + LOG_KEY_MESSAGE + LOG_KEY_DESCRIPTION,
-				"Throwable", LOG_EXCEPTION, ex.getHttpStatusCode().value(), ex.getMessage(), ex.getDescription());
+				THROWABLE, LOG_EXCEPTION, ex.getHttpStatusCode().value(), ex.getMessage(), ex.getDescription());
 		return ResponseEntity.status(ex.getHttpStatusCode()).headers(responseHeaders).body(ex.getOnlyBody());
 
 	}
@@ -79,7 +80,7 @@ public class ControlExceptionHandler {
 		responseHeaders.set(X_AUTH_TRACEID, this.getTraceID());
 		
 		log.error(LOG_KEY_METHOD + LOG_KEY_EVENT + LOG_KEY_HTTP_CODE + LOG_KEY_MESSAGE + LOG_KEY_DESCRIPTION,
-				"Throwable", LOG_EXCEPTION, HTTP_CODE_BAD_REQUEST, ex.getMessage(), ExceptionResolver.getRootException(ex));
+				THROWABLE, LOG_EXCEPTION, HTTP_CODE_BAD_REQUEST, ex.getMessage(), ExceptionResolver.getRootException(ex));
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).headers(responseHeaders).body(null);
 
@@ -92,9 +93,22 @@ public class ControlExceptionHandler {
 		responseHeaders.set(X_AUTH_TRACEID, this.getTraceID());
 		
 		log.error(LOG_KEY_METHOD + LOG_KEY_EVENT + LOG_KEY_HTTP_CODE + LOG_KEY_MESSAGE + LOG_KEY_DESCRIPTION,
-				"Throwable", LOG_EXCEPTION, HTTP_CODE_BAD_REQUEST, ex.getMessage(), ExceptionResolver.getRootException(ex));
+				THROWABLE, LOG_EXCEPTION, HTTP_CODE_BAD_REQUEST, ex.getMessage(), ExceptionResolver.getRootException(ex));
 		
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY.value()).headers(responseHeaders).body(ex.getOnlyBody().getBody());
+
+	}
+	
+	@ExceptionHandler({ TransactionException.class })
+	public ResponseEntity<Object> handleTransactionException(TransactionException ex) {
+
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set(X_AUTH_TRACEID, this.getTraceID());
+		
+		log.error(LOG_KEY_METHOD + LOG_KEY_EVENT + LOG_KEY_HTTP_CODE + LOG_KEY_MESSAGE + LOG_KEY_DESCRIPTION,
+				THROWABLE, LOG_EXCEPTION, HTTP_CODE_BAD_REQUEST, ex.getMessage(), ExceptionResolver.getRootException(ex));
+		
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY.value()).headers(responseHeaders).body(ex.getMessage());
 
 	}
 
@@ -147,8 +161,8 @@ public class ControlExceptionHandler {
 
 		List<String> fieldErrorDtos = fieldErrors.stream()
 				.map(f -> f.getField().concat(":").concat(f.getDefaultMessage())).map(String::new)
-				.collect(Collectors.toList());
-
+				.toList();
+		
 		BusinessException ex = BusinessException.builder().httpStatusCode(HttpStatus.BAD_REQUEST)
 				.message(CONSTRAINT_VALIDATION_FAILED).description(fieldErrorDtos.toString()).build();
 		HttpHeaders responseHeaders = new HttpHeaders();
